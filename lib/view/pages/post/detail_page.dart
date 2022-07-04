@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/controller/post_controller.dart';
+import 'package:flutter_blog/controller/user_controller.dart';
 import 'package:flutter_blog/view/pages/post/update_page.dart';
 import 'package:get/get.dart';
 
@@ -7,25 +9,31 @@ import 'home_page.dart';
 class DetailPage extends StatelessWidget {
   //const DetailPage({Key? key}) : super(key: key);
 
-  final int id;
+  final int? id;
 
   const DetailPage(this.id);
 
   @override
   Widget build(BuildContext context) {
     //String data = Get.arguments;
+    UserController u = Get.find();
+    PostController p = Get.find();
+    print('로그인 유저아이디 : ${u.principal.value.id}');
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(' 로그인 상태 : ${u.isLogin}, 게시글 : $id'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: Obx(()=>Column(
           // Center(child: Text('Detail Page $id '),),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //paddingAll(15),
-            Text(' 글 제목 ', style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 35
+            Text('${p.post.value.title}', //글제목
+              style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 35
             ),),
             Divider(),
             Row(
@@ -47,10 +55,11 @@ class DetailPage extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: Text('글 내용' * 500),
+                child: Text('${p.post.value.content}' * 100),
               ),
             )
           ],
+        ),
         ),
       ),
     );

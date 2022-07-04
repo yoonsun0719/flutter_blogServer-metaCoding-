@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/controller/user_controller.dart';
 import 'package:flutter_blog/util/validator_util.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ class UpdatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+      return Scaffold(
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

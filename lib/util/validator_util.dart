@@ -8,7 +8,7 @@ Function validateUsername() {
       return '영문만 가능합니다.';
     } else if (value.length > 15) {
       return '15자 이상 초과하였습니다.';
-    } else if (value.length < 4) {
+    } else if (value.length < 3) {
       return '4자 이상 입력바랍니다.';
     } else {
       return null;

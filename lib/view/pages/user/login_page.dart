@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blog/controller/user_controller.dart';
 import 'package:flutter_blog/domain/user/user_repository.dart';
+import 'package:flutter_blog/util/jwt.dart';
 import 'package:flutter_blog/util/validator_util.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +32,7 @@ class LoginPage extends StatelessWidget {
               alignment: Alignment.center,
               height: 200.0,
               child: Text(
-                '로그인 페이지',
+                '로그인 페이지 ${u.isLogin}',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
@@ -57,11 +58,24 @@ class LoginPage extends StatelessWidget {
               funValidator: validatePassword()),
           CustomElevatedButton(
             text: '로그인',
-            funPageRoute: () {
+            funPageRoute: () async {
+              /*1번 if (_formKey.currentState!.validate()) {
+                Get.to(() => HomePage());
+                u.login('ssar', '1234');*/
               if (_formKey.currentState!.validate()) {
                 //Get.to(HomePage());
                 //UserRepository u = UserRepository();
-                u.login(_username.text.trim(), _password.text.trim());
+                int result = await u.login(
+                    _username.text.trim(), _password.text.trim());
+                if (result == "1") {
+                  print('토큰 정상적으로 받음');
+                  //jwtToken = token;
+                  //print('jwtToken : $jwtToken');
+                  Get.to(() => HomePage());
+                } else {
+                  print('토큰 못받음');
+                  Get.snackbar('로그인 시도', '로그인실패');
+                }
               }
             },
           ),
