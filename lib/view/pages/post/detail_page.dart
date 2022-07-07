@@ -22,7 +22,8 @@ class DetailPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(' 로그인 상태 : ${u.isLogin}, 게시글 : $id'),
+        title: Text(' 로그인 상태 : ${p.post.value.user!
+            .username}, 게시글 : $id'), //${u.isLogin}
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -35,27 +36,28 @@ class DetailPage extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 35
             ),),
-            Divider(),
-            Row(
+            Divider(height: 30,),
+            u.principal.value.id == p.post.value.user!.id ? Row(
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    Get.off(HomePage()); //상태관리로 갱신시킬 수있음
+                  onPressed: () async {
+                    await p.deletebyId(p.post.value.id!);
+                    Get.off( ()=> HomePage()); //상태관리로 갱신시킬 수있음
                   },
                   child: Text('삭제'),
                 ),
                 SizedBox(width: 10.0,) ,
                 ElevatedButton(
                   onPressed: () {
-                    Get.to(UpdatePage());
+                    Get.to(()=>UpdatePage());
                   },
                   child: Text('수정'),
                 ),
               ],
-            ),
+            ) : SizedBox(),
             Expanded(
               child: SingleChildScrollView(
-                child: Text('${p.post.value.content}' * 100),
+                child: Text('${p.post.value.content}'),
               ),
             )
           ],

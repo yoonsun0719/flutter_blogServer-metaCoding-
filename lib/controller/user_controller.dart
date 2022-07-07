@@ -16,7 +16,7 @@ class UserController extends GetxController {
     this.isLogin.value = false;
     jwtToken = null;
   }
-
+  //수정전
   /*Future<String> login(String username, String password) async{
     String token =await _userRepository.login(username, password);
 
@@ -31,7 +31,7 @@ class UserController extends GetxController {
     User principal =await _userRepository.login(username, password);
 
     if(principal.id != null) {
-      this.isLogin.value = true;
+      isLogin.value = true;
       this.principal.value = principal;
       return 1;
     }else {

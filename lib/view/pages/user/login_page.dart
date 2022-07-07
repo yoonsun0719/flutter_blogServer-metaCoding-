@@ -67,7 +67,7 @@ class LoginPage extends StatelessWidget {
                 //UserRepository u = UserRepository();
                 int result = await u.login(
                     _username.text.trim(), _password.text.trim());
-                if (result == "1") {
+                if (result == 1) {
                   print('토큰 정상적으로 받음');
                   //jwtToken = token;
                   //print('jwtToken : $jwtToken');

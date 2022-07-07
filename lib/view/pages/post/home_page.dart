@@ -11,39 +11,58 @@ import 'detail_page.dart';
 
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  //const HomePage({Key? key}) : super(key: key);
+
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
 
     //UserController u = Get.put(UserController()); //put = 없으면 만들고 있으면 찾음. --> 우린 있으므로 fint 로변경
     UserController u = Get.find();
-
     //홈페이지 도착하면 목록을 뿌려줘야 하므로
     //객체생성(create) , onInit함수실행 (initialize)
     PostController p = Get.put(PostController());
     //p.findAll();
 
     return Scaffold(
+      key: scaffoldKey,
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          if(scaffoldKey.currentState!.isDrawerOpen) {
+            scaffoldKey.currentState!.openEndDrawer();
+          }else{
+            scaffoldKey.currentState!.openDrawer();
+          }
+        },
+        child: Icon(Icons.menu), //아이콘생성
+      ),
       drawer: _navigation(context),
       appBar: AppBar(
         title: Text('${u.isLogin}'),
       ),
-      body: Obx(()=> ListView.separated(
-        itemCount: p.posts.length,
-        itemBuilder: (context, index){
-          return ListTile(
-            onTap: () async{
-              await p.findById(p.posts[index].id!);
-              Get.to(DetailPage(p.posts[index].id),arguments: 'arguments 속성 테스트');
-            },
-            title: Text('${p.posts[index].title}'),
-            leading: Text('${p.posts[index].id}'),
-          );
+      body: Obx(()=>RefreshIndicator(
+        key: refreshKey,
+        onRefresh: () async {
+          await  p.findAll();
         },
-        separatorBuilder: (context, index){
-          return Divider();
-        },
+        child: ListView.separated(
+          itemCount: p.posts.length,
+          itemBuilder: (context, index){
+            return ListTile(
+              onTap: () async{
+                await p.findById(p.posts[index].id!);
+                Get.to(()=>DetailPage(p.posts[index].id),arguments: 'arguments 속성 테스트');
+              },
+              title: Text('${p.posts[index].title}'),
+              leading: Text('${p.posts[index].id}'),
+            );
+          },
+          separatorBuilder: (context, index){
+            return Divider();
+          },
+        ),
       ),
       ),
     );
@@ -65,7 +84,9 @@ class HomePage extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: () {
-                  Get.to(UserInfo());
+                 //Navigator.pop(context); //<== 해당부분만 제어가능 || 자유롭게 제어가능 ==> scaffoldKey.currentState!.openEndDrawer();
+                 scaffoldKey.currentState!.openEndDrawer();
+                  Get.to(()=>UserInfo());
                 },
                 child: Text(
                   '회원정보보기',
