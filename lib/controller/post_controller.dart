@@ -27,7 +27,7 @@ class PostController extends GetxController{
   }
 
   //삭제
-  Future<void> deletebyId(int id) async {
+  Future<void> deletebyId(int id)  async {  // 비동기
     int result =await _postRepository.deleteById(id);
 
     if(result == 1 ) {
